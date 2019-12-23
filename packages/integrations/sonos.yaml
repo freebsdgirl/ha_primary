@@ -1,0 +1,6 @@
+sonos:
+  media_player:
+    hosts:
+      - !secret sonos_play_one-01_ip
+      - !secret sonos_play_one-02_ip
+      - !secret sonos_one-01_ip

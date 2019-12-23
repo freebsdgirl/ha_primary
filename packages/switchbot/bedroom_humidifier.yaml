@@ -1,0 +1,96 @@
+switch:
+  - platform: switchbot
+    name: Bedroom Humidifier
+    mac: '4c:11:ae:b1:8a:3e'
+
+input_boolean:
+  bedroom_humidifier_state:
+    name: Bedroom Humidifier State
+    initial: off
+
+input_select:
+  bedroom_humidifier_speed:
+    options:
+      - auto
+      - low
+      - medium
+      - high
+    initial: auto
+
+### create a fan (there's no humidifier type in home assistant
+fan:
+- platform: template
+  fans:
+    bedroom_fan:
+      friendly_name: Bedroom Humidifier
+      value_template: "{{ states('input_boolean.bedroom_humidifier_state') }}"
+      speed_template: "{{ states('input_select.bedroom_humidifier_speed') }}"
+      turn_on:
+        service: script.bedroom_humidifier_auto
+      turn_off:
+        service: script.bedroom_humidifier_off
+      set_speed:
+        service_template: "script.bedroom_humidifier_{{ input_select.bedroom_humidifier_speed }}"
+      speeds:
+        - auto
+        - low
+        - medium
+        - high
+
+script:
+  bedroom_humidifier_off:
+    sequence:
+      - service: ifttt.trigger
+        data:
+          event: bedroom_humidifier_off
+      - service: input_boolean.turn_off
+        data:
+          entity_id: input_boolean.bedroom_humidifier_state
+  bedroom_humidifier_low:
+    sequence:
+      - service: ifttt.trigger
+        data:
+          event: bedroom_humidifier_low
+      - service: input_boolean.turn_on
+        data:
+          entity_id: input_boolean.bedroom_humidifier_state
+      - service: input_select.select_option
+        data:
+          entity_id: input_select.bedroom_humidifier_speed
+          option: low
+  bedroom_humidifier_medium:
+    sequence:
+      - service: ifttt.trigger
+        data:
+          event: bedroom_humidifier_medium
+      - service: input_boolean.turn_on
+        data:
+          entity_id: input_boolean.bedroom_humidifier_state
+      - service: input_select.select_option
+        data:
+          entity_id: input_select.bedroom_humidifier_speed
+          option: medium
+  bedroom_humidifier_high:
+    sequence:
+      - service: ifttt.trigger
+        data:
+          event: bedroom_humidifier_high
+      - service: input_boolean.turn_on
+        data:
+          entity_id: input_boolean.bedroom_humidifier_state
+      - service: input_select.select_option
+        data:
+          entity_id: input_select.bedroom_humidifier_speed
+          option: low
+  bedroom_humidifier_auto:
+    sequence:
+      - service: ifttt.trigger
+        data:
+          event: bedroom_humidifier_auto
+      - service: input_boolean.turn_on
+        data:
+          entity_id: input_boolean.bedroom_humidifier_state
+      - service: input_select.select_option
+        data:
+          entity_id: input_select.bedroom_humidifier_speed
+          option: auto

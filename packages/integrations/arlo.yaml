@@ -1,0 +1,68 @@
+aarlo:
+  username: !secret arlo_username
+  password: !secret arlo_password
+  db_motion_time: 30
+  db_ding_time: 10
+  recent_time: 10
+  last_format: '%m-%d %H:%M'
+  refresh_devices_every: 2
+
+camera:
+  - platform: aarlo
+    ffmpeg_arguments: '-pred 1 -q:v 2'
+
+alarm_control_panel:
+  - platform: aarlo
+    home_mode_name: home
+    away_mode_name: armed
+    trigger_time: 30
+    alarm_volume: 8
+
+binary_sensor:
+  - platform: aarlo
+    monitored_conditions:
+    - motion
+    - sound
+    - ding
+
+sensor:
+  - platform: aarlo
+    monitored_conditions:
+    - last_capture
+    - total_cameras
+    - battery_level
+    - captured_today
+    - signal_strength
+
+light:
+  - platform: aarlo
+
+switch:
+  - platform: aarlo
+    siren: True
+    all_sirens: True
+    snapshot: True
+    siren_volume: 1
+    siren_duration: 10
+
+homeassistant:
+  customize:
+    sensor.aarlo_doorbell_battery_level:
+      device_class: battery
+      friendly_name: Arlo Doorbell Battery
+    sensor.aarlo_front_door_camera_battery_level:
+      device_class: battery
+      friendly_name: Arlo Front Door Camera Battery
+    sensor.aarlo_last_front_door_camera:
+      friendly_name: Arlo Front Door Camera Last
+    sensor.aarlo_doorbell_signal_strength:
+      device_class: signal_strength
+      friendly_name: Arlo Doorbell Signal Strength
+    sensor.aarlo_front_door_camera_signal_strength:
+      device_class: signal_strength
+      friendly_name: Arlo Front Door Camera Signal Strength
+    binary_sensor.aarlo_ding_doorbell:
+      friendly_name: Arlo Doorbell Occupancy
+    sensor.aarlo_captured_today_front_door_camera:
+      friendly_name: Arlo Front Door Camera Captured Today
+    

@@ -1,0 +1,386 @@
+input_boolean:
+  occupancy_lighting:
+    name: Occupancy Based Lighting
+  bedroom_occupancy_lighting:
+  bathroom_occupancy_lighting:
+  dining_room_occupancy_lighting:
+  hallway_occupancy_lighting:
+  kitchen_occupancy_lighting:
+  living_room_occupancy_lighting:
+  loft_occupancy_lighting:
+  stairs_occupancy_lighting:
+
+input_number:
+  bathroom_occupancy_timeout:
+    min: 1
+    max: 60
+  bedroom_occupancy_timeout:
+    min: 1
+    max: 60
+  dining_room_occupancy_timeout:
+    min: 1
+    max: 60
+  hallway_occupancy_timeout:
+    min: 1
+    max: 60
+  kitchen_occupancy_timeout:
+    min: 1
+    max: 60
+  living_room_occupancy_timeout:
+    min: 1
+    max: 60
+  loft_occupancy_timeout:
+    min: 1
+    max: 60
+  stairs_occupancy_timeout:
+    min: 1
+    max: 60
+
+automation:
+  # bathroom
+  - alias: bathroom occupancy lighting on 
+    trigger:
+      - platform: state
+        entity_id: binary_sensor.bathroom_occupancy
+        to: 'on'
+    condition: 
+      - condition: state
+        entity_id: input_boolean.sleeping 
+        state: 'off' 
+      - condition: state
+        entity_id: input_boolean.bathroom_occupancy_lighting
+        state: 'on'
+      - condition: state
+        entity_id: input_boolean.occupancy_lighting
+        state: 'on'
+    action:
+      - service: light.turn_on
+        entity_id: light.bathroom 
+        data_template:
+          brightness_pct: >
+            {% if is_state("sun.sun", "below_horizon") %} 50 
+            {% else %} 100 {% endif %}
+
+  - alias: bathroom occupancy lighting off
+    trigger:
+      - platform: state
+        entity_id: binary_sensor.bathroom_occupancy
+        to: 'off'
+        for:
+          minutes: "{{ states('input_number.bathroom_occupancy_timeout')|int }}"
+    condition: 
+      - condition: state
+        entity_id: input_boolean.sleeping 
+        state: 'off' 
+      - condition: state
+        entity_id: input_boolean.bathroom_occupancy_lighting
+        state: 'on'
+      - condition: state
+        entity_id: input_boolean.occupancy_lighting
+        state: 'on'
+    action:
+      - service: light.turn_off
+        entity_id: light.bathroom 
+
+  # bedroom
+  - alias: bedroom occupancy lighting on 
+    trigger:
+      - platform: state
+        entity_id: binary_sensor.bedroom_occupancy
+        to: 'on'
+    condition: 
+      - condition: state
+        entity_id: input_boolean.sleeping 
+        state: 'off' 
+      - condition: state
+        entity_id: input_boolean.bedroom_occupancy_lighting
+        state: 'on'
+      - condition: state
+        entity_id: input_boolean.occupancy_lighting
+        state: 'on'
+    action:
+      - service: light.turn_on
+        data_template:
+          entity_id: >
+            {% if is_state('sun.sun', 'below_horizon') %} light.bedroom_accent
+            {% else %} light.bedroom {% endif %}
+          brightness_pct: >
+            {% if is_state("sun.sun", "below_horizon") %} 50 
+            {% else %} 100 {% endif %}
+
+  - alias: bedroom occupancy lighting off
+    trigger:
+      - platform: state
+        entity_id: binary_sensor.bedroom_occupancy
+        to: 'off'
+        for:
+          minutes: "{{ states('input_number.bedroom_occupancy_timeout')|int }}"
+    condition: 
+      - condition: state
+        entity_id: input_boolean.sleeping 
+        state: 'off' 
+      - condition: state
+        entity_id: input_boolean.bedroom_occupancy_lighting
+        state: 'on'
+      - condition: state
+        entity_id: input_boolean.occupancy_lighting
+        state: 'on'
+    action:
+      - service: light.turn_off
+        data_template:
+          entity_id: >
+            {% if is_state('sun.sun', 'below_horizon') %} light.bedroom_accent
+            {% else %} light.bedroom {% endif %}
+
+  # dining room / kitchen
+  - alias: kitchen occupancy lighting on
+    trigger:
+      - platform: state
+        entity_id: binary_sensor.dining_room_occupancy
+        to: 'on'
+      - platform: state
+        entity_id: binary_sensor.kitchen_occupancy
+        to: 'on'
+    condition: 
+      - condition: state
+        entity_id: input_boolean.sleeping 
+        state: 'off' 
+      - condition: state
+        entity_id: input_boolean.kitchen_occupancy_lighting
+        state: 'on'
+      - condition: state
+        entity_id: input_boolean.occupancy_lighting
+        state: 'on'
+    action:
+      - service: light.turn_on
+        data_template:
+          entity_id: >
+            {% if is_state('sun.sun', 'below_horizon') %} 
+              light.dining_room_accent, light.kitchen_accent
+            {% else %} 
+              light.dining_room, light.kitchen
+            {% endif %}
+
+  - alias: kitchen occupancy lighting off
+    trigger:
+      - platform: state
+        entity_id: binary_sensor.dining_room_occupancy
+        to: 'off'
+        for:
+          minutes: "{{ states('input_number.dining_room_occupancy_timeout')|int }}"
+      - platform: state
+        entity_id: binary_sensor.kitchen_occupancy
+        to: 'off'
+        for:
+          minutes: "{{ states('input_number.kitchen_occupancy_timeout')|int }}"
+    condition: 
+      - condition: state
+        entity_id: input_boolean.sleeping 
+        state: 'off' 
+      - condition: state
+        entity_id: input_boolean.kitchen_occupancy_lighting
+        state: 'on'
+      - condition: state
+        entity_id: input_boolean.occupancy_lighting
+        state: 'on'
+    action:
+      - service: light.turn_off
+        data_template:
+          entity_id: >
+            {% if is_state('sun.sun', 'below_horizon') %} 
+              light.dining_room_accent, light.kitchen_accent
+            {% else %} 
+              light.dining_room, light.kitchen
+            {% endif %}
+
+  # hallway
+  - alias: hallway occupancy lighting on
+    trigger:
+      - platform: state
+        entity_id: binary_sensor.hallway_occupancy
+        to: 'on'
+    condition: 
+      - condition: state
+        entity_id: sun.sun
+        state: 'above_horizon' 
+      - condition: state
+        entity_id: input_boolean.sleeping 
+        state: 'off' 
+      - condition: state
+        entity_id: input_boolean.hallway_occupancy_lighting
+        state: 'on'
+      - condition: state
+        entity_id: input_boolean.occupancy_lighting
+        state: 'on'
+    action:
+      - service: light.turn_on
+        entity_id: light.hallway
+
+  - alias: hallway occupancy lighting off
+    trigger:
+      - platform: state
+        entity_id: binary_sensor.hallway_occupancy
+        to: 'off'
+        for:
+          minutes: "{{ states('input_number.hallway_occupancy_timeout')|int }}"
+    condition: 
+      - condition: state
+        entity_id: sun.sun
+        state: 'above_horizon' 
+      - condition: state
+        entity_id: input_boolean.sleeping 
+        state: 'off' 
+      - condition: state
+        entity_id: input_boolean.hallway_occupancy_lighting
+        state: 'on'
+      - condition: state
+        entity_id: input_boolean.occupancy_lighting
+        state: 'on'
+    action:
+      - service: light.turn_off
+        entity_id:
+          - light.hallway
+
+  # living room
+  - alias: living room occupancy lighting on
+    trigger:
+      - platform: state
+        entity_id: binary_sensor.living_room_occupancy
+        to: 'on'
+    condition: 
+      - condition: state
+        entity_id: input_boolean.sleeping 
+        state: 'off' 
+      - condition: state
+        entity_id: input_boolean.living_room_occupancy_lighting
+        state: 'on'
+      - condition: state
+        entity_id: input_boolean.occupancy_lighting
+        state: 'on'
+    action:
+      - service: light.turn_on
+        data_template:
+          entity_id: >
+            {% if is_state('sun.sun', 'below_horizon') %} light.living_room_accent
+            {% else %} light.living_room {% endif %}
+
+  - alias: living_room occupancy lighting off
+    trigger:
+      - platform: state
+        entity_id: binary_sensor.living_room_occupancy
+        to: 'off'
+        for:
+          minutes: "{{ states('input_number.living_room_occupancy_timeout')|int }}"
+    condition: 
+      - condition: state
+        entity_id: input_boolean.sleeping 
+        state: 'off' 
+      - condition: state
+        entity_id: input_boolean.living_room_occupancy_lighting
+        state: 'on'
+      - condition: state
+        entity_id: input_boolean.occupancy_lighting
+        state: 'on'
+    action:
+      - service: light.turn_off
+        data_template:
+          entity_id: >
+            {% if is_state('sun.sun', 'below_horizon') %} light.living_room_accent
+            {% else %} light.living_room {% endif %}
+
+  # stairs
+  - alias: stairs occupancy lighting on
+    trigger:
+      - platform: state
+        entity_id: binary_sensor.stairs_occupancy
+        to: 'on'
+    condition: 
+      - condition: state
+        entity_id: sun.sun
+        state: 'above_horizon' 
+      - condition: state
+        entity_id: input_boolean.sleeping 
+        state: 'off' 
+      - condition: state
+        entity_id: input_boolean.stairs_occupancy_lighting
+        state: 'on'
+      - condition: state
+        entity_id: input_boolean.occupancy_lighting
+        state: 'on'
+    action:
+      - service: light.turn_on
+        entity_id: light.stairs
+
+  - alias: stairs occupancy lighting off
+    trigger:
+      - platform: state
+        entity_id: binary_sensor.stairs_occupancy
+        to: 'off'
+        for:
+          minutes: "{{ states('input_number.stairs_occupancy_timeout')|int }}"
+    condition: 
+      - condition: state
+        entity_id: sun.sun
+        state: 'above_horizon' 
+      - condition: state
+        entity_id: input_boolean.sleeping 
+        state: 'off' 
+      - condition: state
+        entity_id: input_boolean.stairs_occupancy_lighting
+        state: 'on'
+      - condition: state
+        entity_id: input_boolean.occupancy_lighting
+        state: 'on'
+    action:
+      - service: light.turn_off
+        entity_id: light.stairs
+
+  # loft
+  - alias: loft occupancy lighting on
+    trigger:
+      - platform: state
+        entity_id: binary_sensor.loft_occupancy
+        to: 'on'
+    condition: 
+      - condition: state
+        entity_id: input_boolean.sleeping 
+        state: 'off' 
+      - condition: state
+        entity_id: input_boolean.loft_occupancy_lighting
+        state: 'on'
+      - condition: state
+        entity_id: input_boolean.occupancy_lighting
+        state: 'on'
+    action:
+      - service: light.turn_on
+        data_template:
+          entity_id: >
+            {% if is_state('sun.sun', 'below_horizon') %} light.loft_accent
+            {% else %} light.loft {% endif %}
+          brightness_pct: >
+            {% if is_state("sun.sun", "below_horizon") %} 50 
+            {% else %} 100 {% endif %}
+
+  - alias: loft occupancy lighting off
+    trigger:
+      - platform: state
+        entity_id: binary_sensor.loft_occupancy
+        to: 'off'
+        for:
+          minutes: "{{ states('input_number.loft_occupancy_timeout')|int }}"
+    condition: 
+      - condition: state
+        entity_id: input_boolean.sleeping 
+        state: 'off' 
+      - condition: state
+        entity_id: input_boolean.loft_occupancy_lighting
+        state: 'on'
+      - condition: state
+        entity_id: input_boolean.occupancy_lighting
+        state: 'on'
+    action:
+      - service: light.turn_off
+        data_template:
+          entity_id: >
+            {% if is_state('sun.sun', 'below_horizon') %} light.loft_accent
+            {% else %} light.loft {% endif %}

@@ -1,0 +1,56 @@
+# define an input select for currently occupied room
+input_select:
+  occupied:
+    options:
+      - kitchen
+      - dining_room
+      - stairs
+      - loft
+      - living_room
+      - hallway
+      - bathroom
+      - bedroom
+      - master_bath
+      - guest_bedroom
+      - unknown
+    initial: unknown
+
+binary_sensor:
+  - platform: template
+    sensors:
+      # create a template binary sensor for occupancy
+      bathroom_occupancy:
+        value_template: '{{ is_state("input_select.occupied", "bathroom") }}'
+      bedroom_occupancy:
+        value_template: '{{ is_state("input_select.occupied", "bedroom") }}'
+      dining_room_occupancy:
+        value_template: '{{ is_state("input_select.occupied", "dining_room") }}'
+      hallway_occupancy:
+        value_template: '{{ is_state("input_select.occupied", "hallway") }}'
+      kitchen_occupancy:
+        value_template: '{{ is_state("input_select.occupied", "kitchen") }}'
+      living_room_occupancy:
+        value_template: '{{ is_state("input_select.occupied", "living_room") }}'
+      loft_occupancy:
+        value_template: '{{ is_state("input_select.occupied", "loft") }}'
+      stairs_occupancy:
+        value_template: '{{ is_state("input_select.occupied", "stairs") }}'
+
+homeassistant:
+  customize:
+    binary_sensor.bathroom_occupancy:
+      device_class: occupancy
+    binary_sensor.bedroom_occupancy:
+      device_class: occupancy
+    binary_sensor.dining_room_occupancy:
+      device_class: occupancy
+    binary_sensor.hallway_occupancy:
+      device_class: occupancy
+    binary_sensor.kitchen_occupancy:
+      device_class: occupancy
+    binary_sensor.living_room_occupancy:
+      device_class: occupancy
+    binary_sensor.loft_occupancy:
+      device_class: occupancy
+    binary_sensor.stairs_occupancy:
+      device_class: occupancy

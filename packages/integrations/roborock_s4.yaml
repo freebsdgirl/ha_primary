@@ -1,0 +1,22 @@
+vacuum:
+  - platform: xiaomi_miio
+    host: !secret miio_host
+    token: !secret miio_token
+
+# roborock s4 has some bugs they are still working out. it gets into a stuck state a lot.
+# this automation looks for that state and auto-resumes the cleaning cycle.
+
+automation:
+  - alias: restart_vacuum
+    trigger:
+      - platform: state
+        entity_id: vacuum.xiaomi_vacuum_cleaner
+        to: 'error'
+    condition:
+      - condition: template
+        value_template: '{{ state_attr("vacuum.xiaomi_vacuum_cleaner", "error") == "Device stuck, clean area" }}'
+    action:
+      - delay:
+          seconds: 5
+      - service: vacuum.start
+        entity_id: vacuum.xiaomi_vacuum_cleaner

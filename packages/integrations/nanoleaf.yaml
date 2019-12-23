@@ -1,0 +1,5 @@
+light:
+  - platform: nanoleaf
+    name: Living Room Nanoleaf
+    host: !secret living_room_nanoleaf_host
+    token: !secret living_room_nanoleaf_token

@@ -1,0 +1,16 @@
+#apple_tv_mrp:
+#  - name: Living Room Apple TV
+#    host: !secret living_room_apple_tv_host
+#    port: !secret living_room_apple_tv_port
+#    credentials: !secret living_room_apple_tv_credentials
+#  - name: Bedroom Apple TV
+#    host: !secret bedroom_apple_tv_host
+#    port: !secret bedroom_apple_tv_port
+#    credentials: !secret bedroom_apple_tv_credentials
+
+homeassistant:
+  customize:
+    sensor.randi_s_iphone_battery_level:
+      device_class: battery
+      friendly_name: Randi's iPhone Battery
+      unit_of_measurement: '%'

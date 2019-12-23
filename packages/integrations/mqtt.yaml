@@ -1,0 +1,13 @@
+mqtt:
+  discovery: false
+  broker: !secret mqtt_host
+  port: !secret mqtt_port
+  client_id: !secret mqtt_client_id
+  username: !secret mqtt_username
+  password: !secret mqtt_password
+  birth_message:
+    topic: 'luke/primary/hass/status'
+    payload: 'online'
+  will_message:
+    topic: 'luke/primary/hass/status'
+    payload: 'offline'

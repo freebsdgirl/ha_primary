@@ -1,0 +1,136 @@
+withings:
+  client_id: !secret withings_client_id
+  client_secret: !secret withings_client_secret
+  profiles:
+    - !secret withings_profile
+
+
+# create a few template sensors to make graphs easier to read in lovelace
+sensor:
+  - platform: template
+    sensors:
+      withings_deep_sleep_duration_minutes:
+        value_template: >-
+          {{ (states("sensor.withings_sleep_deep_duration_seconds") | int /60) | round(2) }}
+      withings_deep_sleep_duration_hours:
+        value_template: >-
+          {{ (states("sensor.withings_sleep_deep_duration_seconds") | int /3660) | round(2) }}
+      withings_light_sleep_duration_minutes:
+        value_template: >-
+          {{ (states("sensor.withings_sleep_light_duration_seconds") | int /60) | round(2) }}
+      withings_light_sleep_duration_hours:
+        value_template: >-
+          {{ (states("sensor.withings_sleep_light_duration_seconds") | int /3660) | round(2) }}
+      withings_rem_sleep_duration_minutes:
+        value_template: >-
+          {{ (states("sensor.withings_sleep_rem_duration_seconds") | int /60) | round(2) }}
+      withings_rem_sleep_duration_hours:
+        value_template: >-
+          {{ (states("sensor.withings_sleep_rem_duration_seconds") | int /3660) | round(2) }}
+      withings_total_sleep_duration_minutes:
+        value_template: >-
+          {{( ((states("sensor.withings_sleep_rem_duration_seconds")|int) + (states("sensor.withings_sleep_light_duration_seconds")|int) + (states("sensor.withings_sleep_deep_duration_seconds")|int)) /60) |round(2)}}
+      withings_total_sleep_duration_hours:
+        value_template: >-
+          {{( ((states("sensor.withings_sleep_rem_duration_seconds")|int) + (states("sensor.withings_sleep_light_duration_seconds")|int) + (states("sensor.withings_sleep_deep_duration_seconds")|int)) /3660) |round(2)}}
+      withings_sleep_wakeup_duration_minutes:
+        value_template: >-
+          {{ (states("sensor.withings_sleep_wakeup_duration_seconds") | int /60) | round(2) }}
+      withings_sleep_wakeup_duration_hours:
+        value_template: >-
+          {{ (states("sensor.withings_sleep_wakeup_duration_seconds") | int /3660) | round(2) }}
+      withings_sleep_tosleep_duration_minutes:
+        value_template: >-
+          {{ (states("sensor.withings_sleep_tosleep_duration_seconds") | int /60) | round(2) }}
+      withings_sleep_tosleep_duration_hours:
+        value_template: >-
+          {{ (states("sensor.withings_sleep_tosleep_duration_seconds") | int /3660) | round(2) }}
+      withings_sleep_towakeup_duration_minutes:
+        value_template: >-
+          {{ (states("sensor.withings_sleep_towakeup_duration_seconds") | int /60) | round(2) }}
+      withings_sleep_towakeup_duration_hours:
+        value_template: >-
+          {{ (states("sensor.withings_sleep_towakeup_duration_seconds") | int /3660) | round(2) }}
+      withings_weight:
+        value_template: >-
+          {{ (states("sensor.withings_weight_kg") | int * 2.20462) | round(2)}}
+      withings_temperature:
+        value_template: >-
+          {{ (states("sensor.withings_temperature_c") | int * 9 / 5 ) + 32 }}
+      withings_skin_temperature:
+        value_template: >-
+          {{ (states("sensor.withings_skin_temperature_c") | int * 9 / 5 ) + 32 }}
+      withings_body_temperature:
+        value_template: >-
+          {{ (states("sensor.withings_body_temperature_c") | int * 9 / 5 ) + 32 }}
+
+homeassistant:
+  customize:
+    sensor.withings_deep_sleep_duration_minutes:
+      icon: mdi:sleep
+      unit_of_measurement: minutes
+      friendly_name: Deep Sleep
+    sensor.withings_deep_sleep_duration_hours:
+      icon: mdi:sleep
+      unit_of_measurement: hours
+      friendly_name: Deep Sleep
+    sensor.withings_light_sleep_duration_minutes:
+      icon: mdi:sleep
+      unit_of_measurement: minutes
+      friendly_name: Light Sleep
+    sensor.withings_light_sleep_duration_hours:
+      icon: mdi:sleep
+      unit_of_measurement: hours
+      friendly_name: Light Sleep
+    sensor.withings_rem_sleep_duration_minutes:
+      icon: mdi:sleep
+      unit_of_measurement: minutes
+      friendly_name: REM Sleep
+    sensor.withings_rem_sleep_duration_hours:
+      icon: mdi:sleep
+      unit_of_measurement: hours
+      friendly_name: REM Sleep
+    sensor.withings_total_sleep_duration_minutes:
+      icon: mdi:sleep
+      unit_of_measurement: minutes
+      friendly_name: Total Sleep
+    sensor.withings_total_sleep_duration_hours:
+      icon: mdi:sleep
+      unit_of_measurement: hours
+      friendly_name: Total Sleep
+    sensor.withings_sleep_wakeup_duration_minutes:
+      icon: mdi:sleep
+      unit_of_measurement: minutes
+      friendly_name: Time Awake
+    sensor.withings_sleep_wakeup_duration_hours:
+      icon: mdi:sleep
+      unit_of_measurement: hours
+      friendly_name: Time Awake
+    sensor.withings_sleep_tosleep_duration_minutes:
+      icon: mdi:sleep
+      unit_of_measurement: minutes
+      friendly_name: Time to Sleep
+    sensor.withings_sleep_tosleep_duration_hours:
+      icon: mdi:sleep
+      unit_of_measurement: hours
+      friendly_name: Time to Sleep
+    sensor.withings_sleep_towakeup_duration_minutes:
+      icon: mdi:sleep
+      unit_of_measurement: minutes
+      friendly_name: Time to Wake Up
+    sensor.withings_sleep_towakeup_duration_hours:
+      icon: mdi:sleep
+      unit_of_measurement: hours
+      friendly_name: Time to Wake Up
+    sensor.withings_weight:
+      unit_of_measurement: lbs
+      friendly_name: Weight
+    sensor.withings_temperature:
+      unit_of_measurement: '°F'
+      friendly_name: Temperature
+    sensor.withings_skin_temperature:
+      unit_of_measurement: '°F'
+      friendly_name: Skin Temperature
+    sensor.withings_body_temperature:
+      unit_of_measurement: '°F'
+      friendly_name: Body Temperature

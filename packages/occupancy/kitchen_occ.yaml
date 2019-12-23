@@ -1,0 +1,71 @@
+automation:
+  # if there is motion in the kitchen
+  # and the dining room is not active,
+  # and the dining room is currently occupied
+  # the kitchen is occupied.
+  - alias: occupancy_kitchen_1
+    trigger:
+      - platform: state
+        entity_id: binary_sensor.kitchen_motion
+        to: 'on'
+    condition:
+      - condition: state
+        entity_id: binary_sensor.kitchen_entrance_motion
+        state: 'off'
+      - condition: state
+        entity_id: input_select.occupied
+        state: 'dining_room'
+    action:
+      - service: input_select.select_option
+        data:
+          entity_id: input_select.occupied
+          option: kitchen
+
+  # if the dining room motion turns off
+  # and the kitchen motion is on
+  # the kitchen is occupied.
+  - alias: occupancy_kitchen_2
+    trigger:
+      - platform: state
+        entity_id: binary_sensor.dining_room_motion
+        to: 'off'
+    condition:
+      - condition: state
+        entity_id: binary_sensor.kitchen_motion
+        state: 'on'
+    action:
+      - service: input_select.select_option
+        data:
+          entity_id: input_select.occupied
+          option: kitchen
+
+  # if the kitchen entrance sensor turns on
+  # and the kitchen motion sensor is on
+  # and the dining room is currently occupied
+  # the kitchen is occupied.
+  - alias: occupancy_kitchen_3
+    trigger:
+      - platform: state
+        entity_id: binary_sensor.kitchen_entrance_motion
+        to: 'on'
+    condition:
+      - condition: state
+        entity_id: binary_sensor.kitchen_motion
+        state: 'on'
+      - condition: state
+        entity_id: input_select.occupied
+        state: 'dining_room'
+    action:
+      - service: input_select.select_option
+        data:
+          entity_id: input_select.occupied
+          option: kitchen
+
+homeassistant:
+  customize:
+    automation.occupancy_kitchen_1:
+      hidden: true
+    automation.occupancy_kitchen_2:
+      hidden: true
+    automation.occupancy_kitchen_3:
+      hidden: true

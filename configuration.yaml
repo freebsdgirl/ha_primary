@@ -1,0 +1,46 @@
+# most things are kept in separate config files. i like to keep this file as sparse as possible.
+default_config:
+
+tts:
+  - platform: google_translate
+
+homeassistant:
+  packages: !include_dir_named packages
+  customize: !include customize.yaml
+
+frontend:
+  themes: !include_dir_merge_named themes
+
+# enable auto discovery
+discovery:
+
+# using dark sky for weather
+weather:
+  - platform: darksky
+    api_key: !secret darksky_apikey 
+    mode: daily
+
+google:
+  client_id: !secret google_client_id 
+  client_secret: !secret google_client_secret 
+
+recorder:
+  db_url: !secret mysql_uri
+  purge_keep_days: 90
+  exclude:
+    domains:
+      - scene
+      - mqtt
+
+group: !include groups.yaml
+automation: !include automations.yaml
+script: !include scripts.yaml
+scene: !include scenes.yaml
+
+fontawesome:
+  solid:
+
+
+### if we don't add this, our lock doesn't work. lol
+lock:
+

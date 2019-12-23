@@ -1,0 +1,55 @@
+automation:
+  # if there is motion on the stairs
+  # and the top stair sensor is off
+  # and the currently occupied room is living room, dining room, hallway, or kitchen
+  # the stairs are currently occupied
+  - alias: occupancy_stairs_1
+    trigger:
+      - platform: state
+        entity_id: binary_sensor.stairs_motion
+        to: 'on'
+    condition:
+      - condition: state
+        entity_id: binary_sensor.stairs_top_motion
+        state: 'off'
+      - condition: or
+        conditions:
+          - condition: state
+            entity_id: input_select.occupied
+            state: 'living_room'
+          - condition: state
+            entity_id: input_select.occupied
+            state: 'dining_room'
+          - condition: state
+            entity_id: input_select.occupied
+            state: 'hallway'
+          - condition: state
+            entity_id: input_select.occupied
+            state: 'kitchen'
+    action:
+      - service: input_select.select_option
+        data:
+          entity_id: input_select.occupied
+          option: stairs
+
+  # if there is motion on the stairs
+  # and the top stair motion sensor is active
+  # and the currently occupied room is loft
+  # the stairs are occupied
+  - alias: occupancy_stairs_2
+    trigger:
+      - platform: state
+        entity_id: binary_sensor.stairs_motion
+        to: 'on'
+    condition:
+      - condition: state
+        entity_id: binary_sensor.stairs_top_motion
+        state: 'on'
+      - condition: state
+        entity_id: input_select.occupied
+        state: 'loft'
+    action:
+      - service: input_select.select_option
+        data:
+          entity_id: input_select.occupied
+          option: stairs

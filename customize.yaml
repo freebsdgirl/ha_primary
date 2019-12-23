@@ -1,0 +1,93 @@
+fan.bedroom_fan:
+  icon: fas:water
+sensor.aarlo_arlo_cameras:
+  icon: fas:video
+binary_sensor.bathroom_door_contact_sensor:
+  icon: fas:door-closed
+binary_sensor.back_door_contact_sensor: {}
+switch.bedroom_double_outlet:
+  device_class: outlet
+  icon: fas:power-off
+switch.bedroom_left_outlet:
+  device_class: outlet
+  icon: mdi:power-socket-us
+binary_sensor.bathroom_door_acceleration:
+  icon: fas:exchange-alt
+binary_sensor.bathroom_motion:
+  icon: fas:running
+sensor.bathroom_luminance:
+  icon: fas:sun
+sensor.bathroom_humidity:
+  icon: fas:water
+sensor.bathroom_temperature:
+  icon: fas:thermometer-half
+binary_sensor.living_room_double_outlet_usb:
+  icon: mdi:usb
+binary_sensor.bedroom_double_outlet_usb:
+  icon: mdi:usb
+switch.hallway_light_switch:
+  device_class: switch
+  icon: mdi:light-switch
+switch.stairs_light_switch_2:
+  device_class: switch
+  icon: mdi:light-switch
+sensor.withings_rem_sleep_duration_hours: {}
+switch.bedroom_blisslight_outlet:
+  device_class: outlet
+  icon: mdi:power-socket-us
+switch.08235300c44f338811f6_2:
+  assumed_state: true
+  device_class: outlet
+  icon: mdi:power-socket-us
+switch.bedroom_blisslight:
+  device_class: switch
+  icon: mdi:star-circle-outline
+switch.bedroom_humidifier:
+  device_class: switch
+  icon: fas:water
+input_boolean.bedroom_blisslight:
+  icon: mdi:star-circle-outline
+switch.bedroom_right_outlet:
+  device_class: outlet
+  icon: mdi:power-socket-us
+switch.living_room_double_outlet:
+  device_class: outlet
+  icon: fas:power-off
+switch.living_room_left_outlet:
+  device_class: outlet
+  icon: mdi:power-socket-us
+switch.living_room_right_outlet:
+  device_class: outlet
+  icon: mdi:power-socket-us
+person.randi_lee_harper: {}
+sensor.aarlo_battery_level_front_door_camera:
+  device_class: battery
+sensor.aarlo_battery_level_doorbell:
+  device_class: battery
+switch.living_room_blisslight:
+  device_class: switch
+  icon: mdi:star-circle-outline
+switch.stairs_light_switch:
+  device_class: switch
+  icon: mdi:light-switch
+switch.kitchen_light_switch:
+  device_class: switch
+switch.dining_room_light_switch:
+  device_class: switch
+switch.living_room_light_switch:
+  device_class: switch
+switch.4608201084f3eb7c0049_1:
+  device_class: outlet
+  icon: mdi:power-socket-us
+switch.4608201084f3eb7c0049_2:
+  device_class: outlet
+  icon: mdi:power-socket-us
+switch.4608201084f3eb7c0049_3:
+  device_class: outlet
+  icon: mdi:power-socket-us
+switch.4608201084f3eb7c0049_4:
+  device_class: outlet
+  icon: mdi:power-socket-us
+switch.4608201084f3eb7c0049_5:
+  device_class: outlet
+  icon: mdi:usb

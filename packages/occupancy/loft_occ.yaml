@@ -1,0 +1,62 @@
+automation:
+  # if there is motion in the loft
+  # and the currently occupied room is unknown
+  # or the stairs are currently occupied
+  # the loft is currently occupied
+  - alias: occupancy_loft_1
+    trigger:
+      - platform: state
+        entity_id: binary_sensor.loft_motion
+        to: 'on'
+    condition:
+      - condition: or
+        conditions:
+          - condition: state
+            entity_id: input_select.occupied
+            state: 'unknown'
+          - condition: state
+            entity_id: input_select.occupied
+            state: 'stairs'
+    action:
+      - service: input_select.select_option
+        data:
+          entity_id: input_select.occupied
+          option: loft
+
+  # if our twitch stream goes active
+  # and the currently occupied room is not loft
+  # the loft is occupied
+  - alias: occupancy_loft_2
+    trigger:
+      - platform: state
+        entity_id: sensor.grandmakj
+        to: 'online'
+    action:
+      - service: input_select.select_option
+        data:
+          entity_id: input_select.occupied
+          option: loft
+  
+  # if our discord status changes to playing a game
+  # the loft is occupied
+  - alias: occupancy_loft_3
+    trigger:
+      - platform: state
+        entity_id:  sensor.discord_grandmakj_0001
+    condition:
+      - condition: template
+        value_template: "{{ state_attr('sensor.discord_grandmakj_0001', 'game') != None }}"
+    action:
+      - service: input_select.select_option
+        data:
+          entity_id: input_select.occupied
+          option: loft
+
+homeassistant:
+  customize:
+    automation.occupancy_loft_1:
+      hidden: true
+    automation.occupancy_loft_2:
+      hidden: true
+    automation.occupancy_loft_3:
+      hidden: true

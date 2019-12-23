@@ -1,0 +1,31 @@
+automation:
+  # if there is motion in the dining room
+  # and the stairs, kitchen, or living room are currently occupied
+  # the dining room is occupied.
+  - alias: occupancy_dining_room_1
+    trigger:
+      - platform: state
+        entity_id: binary_sensor.dining_room_motion
+        to: 'on'
+    condition:
+      - condition: or
+        conditions:
+          - condition: state
+            entity_id: input_select.occupied
+            state: 'stairs'
+          - condition: state
+            entity_id: input_select.occupied
+            state: 'living_room'
+          - condition: state
+            entity_id: input_select.occupied
+            state: 'kitchen'
+    action:
+      - service: input_select.select_option
+        data:
+          entity_id: input_select.occupied
+          option: dining_room
+
+homeassistant:
+  customize:
+    automation.occupancy_dining_room_1:
+      hidden: true

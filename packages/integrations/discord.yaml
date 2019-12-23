@@ -1,0 +1,11 @@
+notify:
+  - platform: discord
+    name: discord
+    token: !secret discord_token
+
+sensor:
+  - platform: discord_game
+    token: !secret discord_token
+    members:
+      - !secret discord_user_1
+      - !secret discord_user_2

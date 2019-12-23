@@ -1,0 +1,39 @@
+remote_homeassistant:
+  instances:
+    - host: !secret ha_secondary_host
+      port: 8123
+      secure: false
+      verify_ssl: false
+      access_token: !secret ha_secondary_token
+      exclude:
+        domains:
+          - persistent_notification
+          - device_tracker
+          - group
+          - person
+          - automation
+        entities:
+          - sensor.zooz_zen25_s2_double_plug_with_usb_port_unknown
+          - switch.third_reality_inc_3rss008z_ffe02a93_1_6
+          - sensor.third_reality_inc_3rss008z_ffe02a93_1_1
+          - sensor.hacs
+          - sensor.bathroom_multi_burglar
+          - sensor.bedroom_multi_burglar
+          - sensor.kitchen_multi_burglar
+          - sensor.living_room_multi_burglar
+          - sensor.loft_multi_burglar
+          - binary_sensor.bedroom_pressure_mat
+          - switch.bedroom_dual_outlet
+          - switch.bedroom_dual_outlet_usb
+          - sensor.bedroom_tv_current
+          - sensor.bedroom_blisslight_current
+          - switch.living_room_dual_outlet
+          - switch.living_room_dual_outlet_usb
+          - sensor.living_room_tv_current
+          - sensor.living_room_diffuser_current
+          - binary_sensor.st_button_1
+#      subscribe_events:
+#        - state_changed
+#        - service_registered
+#        - zwave.network_ready
+#        - zwave.node_event

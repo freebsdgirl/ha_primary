@@ -1,0 +1,24 @@
+automation:
+  # if there is motion in the bathroom
+  # and the hallway motion sensor is active
+  # the bathroom is occupied 
+  - alias: occupancy_bathroom_1
+    trigger:
+      - platform: state
+        entity_id: binary_sensor.bathroom_motion
+        to: 'on'
+    condition:
+      - condition: state
+        entity_id: binary_sensor.hallway_motion
+        state: 'on'
+    action:
+      - service: input_select.select_option
+        data:
+          entity_id: input_select.occupied
+          option: bathroom
+
+
+homeassistant:
+  customize:
+    automation.occupancy_bathroom_1:
+      hidden: true

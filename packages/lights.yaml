@@ -1,0 +1,183 @@
+light:
+  # all the light switches
+  - platform: switch
+    name: Kitchen Ceiling
+    entity_id: switch.kitchen
+  - platform: switch
+    name: Dining Room Ceiling
+    entity_id: switch.dining_room
+  - platform: switch
+    name: Living Room Ceiling
+    entity_id: switch.living_room_light_switch
+  - platform: switch
+    name: Hallway Ceiling
+    entity_id: switch.hallway_light_switch
+  - platform: switch
+    name: Bedroom Ceiling
+    entity_id: switch.bedroom
+  - platform: switch
+    name: Bedroom Entrance Ceiling
+    entity_id: switch.bedroom_entrance
+  - platform: switch
+    name: Stairs Ceiling
+    entity_id: switch.stairs_light_switch
+
+  # device groups that will generally be referred to as a single device
+  - platform: group
+    name: Bathroom Sink
+    entities:
+      - light.bathroom_sink_center
+      - light.bathroom_sink_left
+      - light.bathroom_sink_right
+  - platform: group
+    name: Bedroom Sink
+    entities:
+      - light.bedroom_sink_center
+      - light.bedroom_sink_right
+      - light.bedroom_sink_left
+  - platform: group
+    name: Living Room TV
+    entities:
+      - light.living_room_tv_right
+      - light.living_room_tv_center
+      - light.living_room_tv_left
+  - platform: group
+    name: Loft Floor Lamp
+    entities:
+      - light.loft_floor_lamp_bottom
+      - light.loft_floor_lamp_top
+
+  - platform: group
+    name: Accent Lights
+    entities:
+      - light.kitchen_lightstrip
+      - light.kitchen_right_bloom
+      - light.kitchen_left_bloom
+      - light.dining_room_table_lightstrip
+      - light.living_room_tv_right
+      - light.living_room_tv_center
+      - light.living_room_tv_left
+      - light.loft_bookshelf
+      - light.loft_desk_backlight
+      - light.loft_desk_lightstrip
+      - light.loft_ledge_beam
+      - light.loft_ledge_lightstrip
+      - light.loft_wall_beam
+
+  # light groups for each room
+  - platform: group
+    name: Bedroom
+    entities:
+      - light.bedroom_cloud_lamp
+      - light.bedroom_mirror
+      - light.bedroom_nightstand_lamp
+      - light.bedroom_sink
+      - light.bedroom_ceiling
+      - light.bedroom_entrance_ceiling
+
+  - platform: group
+    name: Bedroom Accent
+    entities:
+      - light.bedroom_cloud_lamp
+      - light.bedroom_mirror
+      - light.bedroom_nightstand_lamp
+      - light.bedroom_sink
+
+  - platform: group
+    name: Bathroom
+    entities:
+      - light.bathroom_ceiling
+      - light.bathroom_sink_center
+      - light.bathroom_sink_left
+      - light.bathroom_sink_right
+
+  - platform: group
+    name: Bathroom Accent
+    entities:
+      - light.bathroom_sink_center
+      - light.bathroom_sink_left
+      - light.bathroom_sink_right
+
+  - platform: group
+    name: Hallway
+    entities:
+      - light.hallway_ceiling
+
+  - platform: group
+    name: Dining Room
+    entities:
+      - light.dining_room_lamp
+      - light.dining_room_table_lightstrip
+      - light.dining_room_ceiling
+
+  - platform: group
+    name: Dining Room Accent
+    entities:
+      - light.dining_room_lamp
+      - light.dining_room_table_lightstrip
+
+  - platform: group
+    name: Kitchen
+    entities:
+      - light.kitchen_lightstrip
+      - light.kitchen_right_bloom
+      - light.kitchen_left_bloom
+      - light.kitchen_ceiling
+
+  - platform: group
+    name: Kitchen Accent
+    entities:
+      - light.kitchen_lightstrip
+      - light.kitchen_right_bloom
+      - light.kitchen_left_bloom
+
+  - platform: group
+    name: Living Room
+    entities:
+      - light.living_room_tv_right
+      - light.living_room_tv_center
+      - light.living_room_tv_left
+      - light.living_room_circle_lamp
+      - light.living_room_lamp
+      - light.living_room_ceiling
+
+  - platform: group
+    name: Living Room Accent
+    entities:
+      - light.living_room_tv_right
+      - light.living_room_tv_center
+      - light.living_room_tv_left
+      - light.living_room_circle_lamp
+      - light.living_room_lamp
+
+  - platform: group
+    name: Master Bath
+    entities:
+      - light.master_bath_ceiling
+
+  - platform: group
+    name: Stairs
+    entities:
+      - light.stairs_ceiling
+
+  - platform: group
+    name: Loft
+    entities:
+      - light.loft_bookshelf
+      - light.loft_desk_backlight
+      - light.loft_desk_lightstrip
+      - light.loft_floor_lamp
+      - light.loft_ledge_beam
+      - light.loft_ledge_lightstrip
+      - light.loft_table_lamp
+      - light.loft_wall_beam
+
+  - platform: group
+    name: Loft Accent
+    entities:
+      - light.loft_bookshelf
+      - light.loft_desk_backlight
+      - light.loft_desk_lightstrip
+      - light.loft_floor_lamp
+      - light.loft_ledge_beam
+      - light.loft_table_lamp

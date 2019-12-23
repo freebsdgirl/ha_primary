@@ -1,0 +1,63 @@
+switch:
+  - platform: template
+    switches:
+      bedroom_blisslight:
+        friendly_name: Bedroom Blisslight
+        value_template: "{{ is_state('switch.bedroom_blisslight_outlet', 'on') }}"
+        turn_on:
+          service: script.bedroom_blisslight_toggle
+        turn_off:
+          service: script.bedroom_blisslight_toggle
+
+input_number:
+  bedroom_blisslight_sleep:
+    name: Bedroom Blisslight Sleep 
+    initial: 30
+    min: 1 
+    max: 120 
+    step: 1
+
+script:
+  bedroom_blisslight_toggle:
+    sequence:
+      - service: switch.toggle 
+        entity_id: switch.bedroom_blisslight_outlet
+      - delay:
+          seconds: 2 
+      - condition: state
+        entity_id: switch.bedroom_blisslight_outlet
+        state: 'on'
+      - service: ifttt.trigger 
+        data:
+          event: toggle_bedroom_blisslight
+  bedroom_blisslight_mode:
+    sequence:
+      - service: ifttt.trigger 
+        data:
+          event: toggle_bedroom_blisslight
+  bedroom_blisslight_sleep:
+    sequence:
+      - delay:
+          minutes: "{{ states('input_number.bedroom_blisslight_sleep') | int }}"
+      - service: switch.turn_off
+        entity_id: switch.bedroom_blisslight_outlet
+
+homeassistant:
+  customize:
+    switch.bedroom_blisslight_outlet:
+      hidden: true
+    script.bedroom_blisslight_sleep:
+      friendly_name: Bedroom Blisslight Sleep
+      icon: mdi:power-sleep
+    input_number.bedroom_blisslight_sleep:
+      icon: mdi:clock
+    script.bedroom_blisslight_mode:
+      friendly_name: Bedroom Blisslight Mode
+      icon: mdi:skip-next-circle 
+    script.bedroom_blisslight_toggle:
+      hidden: true
+    switch.bedroom_blisslight_2:
+      device_class: switch
+      icon: mdi:star-circle-outline
+
+

@@ -1,0 +1,5 @@
+### add support for lifx themes
+
+scene:
+  - platform: lifx_cloud
+    token: !secret lifx_token

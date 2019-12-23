@@ -1,0 +1,53 @@
+automation:
+  # tapping the top button toggles living room lights
+  - alias: scene_lr_lights_on
+    trigger:
+      - platform: state
+        entity_id: input_boolean.living_room_scene_buttons_1_tap
+        to: 'on'
+    action:
+      - service: homeassistant.turn_on
+        entity_id: group.living_room_lights
+  - alias: scene_lr_lights_off
+    trigger:
+      - platform: state
+        entity_id: input_boolean.living_room_scene_buttons_1_hold
+        to: 'off'
+    action:
+      - service: homeassistant.turn_off
+        entity_id: group.living_room_lights
+
+
+  # tapping the bottom button toggles the ceiling lights
+  - alias: scene_ceiling_lights_on
+    trigger:
+      - platform: state
+        entity_id: input_boolean.living_room_scene_buttons_2_tap
+        to: 'on'
+    action:
+      - service: homeassistant.turn_on
+        entity_id:
+          - switch.kitchen
+          - switch.dining_room
+          - switch.living_room_light_switch
+          - switch.hallway_light_switch
+          - switch.stairs_light_switch
+          - switch.bedroom
+          - switch.bedroom_entrance
+          - light.bathroom_ceiling
+  - alias: scene_ceiling_lights_off
+    trigger:
+      - platform: state
+        entity_id: input_boolean.living_room_scene_buttons_2_hold
+        to: 'off'
+    action:
+      - service: homeassistant.turn_off
+        entity_id: 
+          - switch.kitchen
+          - switch.dining_room
+          - switch.living_room_light_switch
+          - switch.hallway_light_switch
+          - switch.stairs_light_switch
+          - switch.bedroom
+          - switch.bedroom_entrance
+          - light.bathroom_ceiling

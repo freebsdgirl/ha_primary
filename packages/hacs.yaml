@@ -1,0 +1,5 @@
+hacs:
+  token: !secret hacs_token
+  theme: true
+  python_script: true
+  appdaemon: true

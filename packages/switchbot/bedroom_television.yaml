@@ -1,0 +1,38 @@
+switch:
+  - platform: template
+    switches:
+      bedroom_tv:
+        # temporary, need to make this a tv :P
+        value_template: "{{ is_state('switch.bedroom_tv_outlet', 'on') }}"
+        turn_on:
+          service: script.bedroom_tv_toggle
+        turn_off:
+          service: script.bedroom_tv_toggle
+
+
+script:
+  bedroom_tv_toggle:
+    sequence:
+      - service: switch.toggle 
+        entity_id: switch.bedroom_tv_outlet
+      - delay:
+          seconds: 2 
+      - condition: state
+        entity_id: switch.bedroom_tv_outlet
+        state: 'on'
+      - service: ifttt.trigger 
+        data:
+          event: toggle_bedroom_television
+
+homeassistant:
+  customize:
+    switch.bedroom_tv:
+      device_class: switch
+      friendly_name: Bedroom TV
+      icon: mdi:television-classic
+    script.bedroom_tv_toggle:
+      friendly_name: Bedroom TV Toggle
+      hidden: true
+    script.bedroom_blisslight_mode:
+      friendly_name: Bedroom Blisslight Mode
+      icon: mdi:skip-next-circle 

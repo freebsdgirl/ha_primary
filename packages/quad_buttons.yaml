@@ -1,0 +1,30 @@
+input_select:
+  loftscenes:
+    options:
+      - scene.loft_1
+      - scene.loft_2
+      - scene.loft_3
+      - scene.loft_4
+      - scene.loft_5
+      - scene.loft_6
+      - scene.loft_7
+    initial: scene.loft_1
+
+automation:
+  # tapping the top button toggles living room lights
+  - alias: wallmote select next loftscene
+    trigger:
+      - platform: state
+        entity_id: input_boolean.living_room_wallmote_quad_1_tap
+    action:
+      - service: input_select.select_next
+        entity_id: input_select.loftscenes
+
+  - alias: selected loft scene
+    trigger:
+      platform: state
+      entity_id: input_select.loftscenes
+    action:
+      service: scene.turn_on
+      data_template:
+        entity_id: "{{ states('input_select.loftscenes') }}"

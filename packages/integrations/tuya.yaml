@@ -1,0 +1,23 @@
+# smart life/tuya devices.
+tuya:
+  username: !secret tuya_username
+  password: !secret tuya_password
+  country_code: US
+
+
+#light:
+#  - platform: switch
+#    name: Bedroom Entrance Fairy Lights
+#    entity_id: switch.bedroom_entrance_leds
+
+#  - platform: switch
+#    name: Dresser Fairy Lights
+#    entity_id: switch.tuya01_left
+
+#  - platform: switch
+#    name: Bedroom TV Fairy Lights
+#    entity_id: switch.tuya01_right
+
+#  - platform: switch
+#    name: Bedroom Laser Lights
+#    entity_id: switch.tuya02_left

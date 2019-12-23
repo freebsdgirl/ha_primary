@@ -1,0 +1,4 @@
+media_player:
+  - platform: samsungtv
+    host: !secret samsung_tv_ip
+    name: Living Room TV

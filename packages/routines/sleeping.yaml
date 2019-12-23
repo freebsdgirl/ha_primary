@@ -1,0 +1,107 @@
+ ### toggled by alexa's good night routine.
+input_boolean:
+  sleeping:
+    initial: off
+
+automation:
+  ### bedtime routine triggered by the sleeping input boolean
+  - alias: run sleep script
+    trigger:
+      - platform: state
+        entity_id: input_boolean.sleeping
+        from: 'off'
+        to: 'on'
+    action:
+      - service: script.sleep_routine
+      
+  ### wake up routine triggered by the sleeping input boolean
+  - alias: run wake script
+    trigger:
+      - platform: state
+        entity_id: input_boolean.sleeping
+        from: 'on'
+        to: 'off'
+    action:
+      - service: script.wake_routine
+
+
+
+
+### actions to run when we go to sleep at night
+script:
+  sleep_routine:
+    sequence:
+      # turn on the humidifier
+      - service: script.bedroom_humidifier_auto
+      # turn on the bedroom blisslight
+      - service: switch.turn_on
+        data:
+          entity_id: switch.bedroom_blisslight_2
+      # lock the front door
+      - service: lock.lock
+        data:
+          entity_id: lock.front_door
+      # arm the alarm system
+      - service: alarm_control_panel.alarm_arm_night
+        entity_id: alarm_control_panel.arlo_base_station
+      # turn off all the lights
+      - service: light.turn_off
+        data:
+          entity_id: 
+            - group.all_lights
+      # turn off the LED strip on the mirror
+      - service: light.turn_off
+        data:
+          entity_id:
+            - light.bedroom_mirror
+      # turn off computer monitors and amp
+      - service: switch.turn_off
+        data:
+          entity_id:
+            - switch.loft_power_strip
+      # turn on some music
+      - service: media_player.select_source
+        data:
+          entity_id: media_player.bedroom_sonos
+          source: Relaxing Piano
+      # turn off the blisslight after 2 minutes.
+      - service: input_number.set_value
+        data:
+          entity_id: input_number.bedroom_blisslight_sleep
+          value: 2
+      - service: script.bedroom_blisslight_sleep
+      # turn off the sonos after 2 hours.
+      - delay:
+          hours: 2
+      - service: media_player.media_stop
+        data:
+          entity_id: media_player.bedroom_sonos
+
+
+  wake_routine:
+    sequence:
+      # turn off the humidifier
+      - service: script.bedroom_humidifier_off
+      # disarm the alarm system
+      - service: alarm_control_panel.alarm_arm_home
+        entity_id: alarm_control_panel.arlo_base_station
+      # turn on bedroom cloud lamp at 50%
+      - service: light.turn_on
+        data:
+          entity_id: 
+            - light.bedroom_cloud_lamp
+          brightness_pct: 50
+      # turn on computer monitors and amp
+      - service: switch.turn_on
+        data:
+          entity_id:
+            - switch.loft_power_strip
+      # wait 90 seconds, then turn on bedroom ceiling lights.
+      # occupancy system won't handle this - we wake up fukkin early
+      - delay:
+          seconds: 90
+      - service: switch.turn_on
+        data:
+          entity_id: 
+            - switch.bedroom
+            - switch.bedroom_entrance

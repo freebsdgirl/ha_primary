@@ -1,0 +1,5 @@
+# used by nodered for testing occupancy based tts
+notify:
+  - name: occupancy
+    platform: file
+    filename: notify_occupancy

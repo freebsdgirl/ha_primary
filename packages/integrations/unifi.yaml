@@ -1,0 +1,6 @@
+# Example configuration.yaml entry
+sensor:
+  - platform: unifigateway
+    host: !secret unifi_host
+    username: !secret unifi_username
+    password: !secret unifi_password

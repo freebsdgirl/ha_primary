@@ -1,0 +1,5 @@
+tplink:
+  discovery: false
+  switch:
+    # hs103 - living room bliss light
+    - host: !secret tplink_hs103_01_host

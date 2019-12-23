@@ -1,0 +1,108 @@
+automation:
+  # if there is motion in the hallway
+  # and the currently occupied room is bathroom, bedroom, or living room
+  # the hallway is occupied 
+  - alias: occupancy_hallway_1
+    trigger:
+      - platform: state
+        entity_id: binary_sensor.hallway_motion
+        to: 'on'
+    condition:
+      - condition: or
+        conditions:
+          - condition: state
+            entity_id: input_select.occupied
+            state: 'bedroom'
+          - condition: state
+            entity_id: input_select.occupied
+            state: 'living_room'
+    action:
+      - service: input_select.select_option
+        data:
+          entity_id: input_select.occupied
+          option: hallway
+
+  # this may seem confusing, but trust me.
+  # if there is no longer motion in the bathroom
+  # and the bathroom is currently occupied
+  # and the hallway motion sensor is active
+  # the hallway is currently occupied.
+  - alias: occupancy_hallway_2
+    trigger:
+      - platform: state
+        entity_id: binary_sensor.bathroom_motion
+        to: 'off'
+    condition:
+      - condition: state
+        entity_id: input_select.occupied
+        state: 'bathroom'
+      - condition: state
+        entity_id: binary_sensor.hallway_motion
+        state: 'on'
+    action:
+      - service: input_select.select_option
+        data:
+          entity_id: input_select.occupied
+          option: hallway
+
+  # if the living room hallway entrance motion sensor triggers
+  # and the currently occupied room is bathroom
+  # and the living room motion sensor is inactive
+  # the hallway is currently occupied
+  - alias: occupancy_hallway_3
+    trigger:
+      - platform: state
+        entity_id: binary_sensor.living_room_hallway_motion
+        to: 'on'
+    condition:
+      - condition: state
+        entity_id: input_select.occupied
+        state: 'bathroom'
+      - condition: state
+        entity_id: binary_sensor.living_room_motion
+        state: 'off'
+    action:
+      - service: input_select.select_option
+        data:
+          entity_id: input_select.occupied
+          option: hallway
+
+  # if the washing machine door opens
+  # the hallway is occupied
+  - alias: occupancy_hallway_4
+    trigger:
+      - platform: state
+        entity_id: binary_sensor.laundry_washer
+        to: 'on'
+    action:
+      - service: input_select.select_option
+        data:
+          entity_id: input_select.occupied
+          option: hallway
+
+  # if the front door opens
+  # the hallway is occupied
+  - alias: occupancy_hallway_5
+    trigger:
+      - platform: state
+        entity_id: binary_sensor.front_door
+        to: 'open'
+    action:
+      - service: input_select.select_option
+        data:
+          entity_id: input_select.occupied
+          option: hallway
+
+homeassistant:
+  customize:
+    automation.occupancy_hallway_1:
+      hidden: true
+    automation.occupancy_hallway_2:
+      hidden: true
+    automation.occupancy_hallway_3:
+      hidden: true
+    automation.occupancy_hallway_4:
+      hidden: true
+    automation.occupancy_hallway_5:
+      hidden: true
+    

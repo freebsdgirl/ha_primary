@@ -1,0 +1,15 @@
+alexa_media:
+  accounts:
+    - email: !secret amazon_user
+      password: !secret amazon_password
+      url: amazon.com
+      exclude_devices:
+        - "This Device"
+        - "Randi's Fire TV stick"
+        - "Randi's Alexa Apps"
+        - "Randi's Fire HD 8"
+
+# https://github.com/custom-components/alexa_media_player/wiki/Notification-Component
+notify:
+  - platform: alexa_media
+    name: alexa
