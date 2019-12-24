@@ -3,3 +3,50 @@ notify:
   - name: occupancy
     platform: file
     filename: notify_occupancy
+
+script:
+  notify_tts:
+    description: "Send a notification to the currently occupied room using Alexa TTS."
+    fields:
+      title:
+        description: "The title to display. (Optional)"
+        example: "Temperature Warning"
+      message:
+        description: "The message to send."
+        example: "The temperature in Living Room is low!"
+    sequence:
+      - service: notify.alexa_media
+        data_template:
+          title: >
+            {% if title is defined %}
+              {{ title }}
+            {% else %}
+              "A message from Luke"
+            {% endif %}
+          message: "{{ message }}"
+          data:
+            type: >
+              {% if is_state('person.randi_lee_harper', 'not_home') %}
+                push
+              {% else %}
+                announce
+              {% endif %}
+          target: >
+            {% if is_state('person.randi_lee_harper', 'not_home') %}
+              Everywhere
+            {% elif is_state('input_select.occupied', 'dining_room') %}
+              media_player.kitchen
+            {% elif is_state('input_select.occupied', 'stairs') %}
+              media_player.living_room, media_player.loft
+            {% elif is_state('input_select.occupied', 'hallway') %}
+              media_player.living_room, media_player.bathroom
+            {% elif is_state('input_select.occupied', 'entrance') %}
+              media_player.living_room
+            {% elif is_state('input_select.occupied', 'unknown') %}
+              Everywhere
+            # todo: change this to an elif and check state of our
+            # generated media player to ensure it exists.
+            # we should probably be doing this for all of these.
+            {% else %}
+              media_player.{{ states('input_select.occupied') }}
+            {% endif %}

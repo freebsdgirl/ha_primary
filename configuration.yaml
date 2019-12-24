@@ -44,3 +44,5 @@ fontawesome:
 ### if we don't add this, our lock doesn't work. lol
 lock:
 
+lovelace:
+  mode: yaml
