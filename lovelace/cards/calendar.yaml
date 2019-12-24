@@ -1,0 +1,9 @@
+type: 'custom:calendar-card'
+entities:
+  - calendar.randi_harper
+  - calendar.holidays_in_united_states
+hideHeader: true
+highlightToday: true
+numberOfDays: 5
+progressBar: true
+showLocation: false

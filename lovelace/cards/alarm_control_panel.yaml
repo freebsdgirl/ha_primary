@@ -1,0 +1,6 @@
+type: alarm-panel
+entity: alarm_control_panel.arlo_base_station
+states:
+  - arm_home
+  - arm_away
+  - arm_night

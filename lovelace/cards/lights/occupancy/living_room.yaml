@@ -1,0 +1,18 @@
+type: vertical-stack
+cards:
+  - type: entities
+    entities:
+      - entity: input_boolean.living_room_occupancy_lighting
+        icon: 'mdi:auto-fix'
+        name: occupancy automations
+      - entity: input_number.living_room_occupancy_timeout
+        icon: 'mdi:clock'
+        name: timeout
+  - type: entities
+    entities:
+      - entity: light.living_room_ceiling
+        name: Ceiling
+      - entity: light.tv_lights
+        name: TV
+      - entity: light.living_room
+        name: All

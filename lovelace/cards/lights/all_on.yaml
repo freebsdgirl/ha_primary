@@ -1,0 +1,14 @@
+type: 'custom:auto-entities'
+show_empty: true
+card:
+  type: entities
+filter:
+  exclude:
+    - attributes:
+        is_hue_group: true
+      domain: light
+  include:
+    - domain: light
+      state: 'on'
+sort:
+  method: name

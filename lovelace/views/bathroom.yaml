@@ -1,0 +1,6 @@
+title: Bathroom
+icon: 'fas:shower'
+badges: []
+cards:
+  - !include ../cards/lights/occupancy/bathroom.yaml
+  - !include ../cards/sensor_swipe/bathroom.yaml

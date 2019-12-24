@@ -1,0 +1,7 @@
+type: 'custom:xiaomi-vacuum-card'
+entity: vacuum.xiaomi_vacuum_cleaner
+name: My Robot Son
+buttons:
+  locate: false
+  spot: true
+  stop: false

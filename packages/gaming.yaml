@@ -1,0 +1,126 @@
+# when we post notifications to discord, we send a live screenshot of the
+# current stream. we have to download it to do that, so we pull the URL
+# from our twitch sensor
+shell_command:
+  update_twitch_image: curl {{ state_attr('sensor.grandmakj', 'entity_picture') }} -o ~/.homeassistant/www/twitch.jpg
+
+
+# automations will toggle this when we start/stop streaming
+input_boolean:
+  streaming:
+
+
+automation:
+  # If our status in discord changes to playing a game and the loft is
+  # currently  occupied, turn off occupancy lighting automations for
+  # the loft and the living room, turn off the lights, and turn on our
+  # gaming lighting scene.
+  - alias: gaming
+    trigger:
+      # this is triggered anytime our discord state changes at all.
+      - platform: state
+        entity_id: sensor.discord_grandmakj_0001
+    condition:
+      # if our game in discord changes and is something other than None.
+      - condition: template
+        value_template: "{{ state_attr('sensor.discord_grandmakj_0001', 'game') != None }}"
+    action:
+      # turn off occupancy-based lighting for loft and living room
+      - service: input_boolean.turn_off
+        entity_id: input_boolean.loft_occupancy_lighting
+      - service: input_boolean.turn_off
+        entity_id: input_boolean.living_room_occupancy_lighting
+      # turn off the living room ceiling, loft lightstrip, and stairs.
+      - service: light.turn_off
+        entity_id:
+          - light.living_room_ceiling
+          - light.loft_ledge_lightstrip
+          - light.stairs
+      # activate a lifx cloud based scene for gaming
+      - service: scene.turn_on
+        entity_id: scene.gaming
+
+  # send a notification to discord when we start streaming.
+  - alias: begin streaming
+    trigger:
+      # this is triggered if our twitch stream changes to streaming.
+      - platform: state
+        entity_id: sensor.grandmakj
+        to: 'streaming'
+    condition:
+      #  only trigger if our streaming boolean is off.
+      - condition: state
+        entity_id: input_boolean.streaming
+        state: 'off'
+    action:
+      # turn on the streaming boolean
+      - service: input_boolean.turn_on
+        entity_id: input_boolean.streaming
+      # pull down the screencap of our current stream
+      - service: shell_command.update_twitch_image
+      # wait 5 seconds just to be safe.
+      - delay:
+          seconds: 5
+      # send a discord notification with info about the stream.
+      - service: notify.discord
+        data_template:
+          message: "https://daddy.zone/\n> GrandmaKJ is now streaming **{{ state_attr('sensor.grandmakj', 'game') }}**\n> _{{ state_attr('sensor.grandmakj', 'title') }}_"
+          target: ["296049006151204864"]
+          data:
+            images:
+              # the pathing for this was obnoxious. don't put it in quotes.
+              - /home/homeassistant/.homeassistant/www/twitch.jpg
+
+  # send a message to discord alerting userse when the game changes while we
+  # are streaming.
+  - alias: streaming new game
+    trigger:
+      # this is triggered if our twitch stream changes at all.
+      - platform: state
+        entity_id: sensor.grandmakj
+    condition:
+      # only trigger if we're already streaming
+      - condition: state
+        entity_id: input_boolean.streaming
+        state: 'on'
+      # check to ensure it's the game that changed
+      - condition: template
+        value_template: '{{ trigger.from_state.attributes.game != trigger.to_state.attributes.game }}'
+    action:
+      # send out a notification to discord with the new game title.
+      - service: notify.discord
+        data_template:
+          message: "> GrandmaKJ: game changed to' **{{ state_attr('sensor.grandmakj', 'game') }}**"
+          target: ["296049006151204864"]
+  
+  # runs when the stream goes offline.
+  - alias: done streaming
+    trigger:
+      # this is triggered if our twitch stream changes to offline
+      - platform: state
+        entity_id: sensor.grandmakj
+        to: 'offline'
+    action:
+      # turn off our streaming boolean
+      - service: input_boolean.turn_off
+        entity_id: input_boolean.streaming
+  
+  # runs if discord reports we are no longer gaming.
+  - alias: done gaming
+    trigger:
+      # this is triggered anytime our discord state changes at all.
+      - platform: state
+        entity_id: sensor.discord_grandmakj_0001
+    condition:
+      # check to ensure it's the game that changed
+      - condition: template
+        value_template: '{{ trigger.from_state.attributes.game != trigger.to_state.attributes.game }}'
+      # if our game in discord changes to None.
+      - condition: template
+        value_template: "{{ state_attr('sensor.discord_grandmakj_0001', 'game') == None }}"
+    action:
+      # turn on occupancy-based lighting for loft and living room
+      - service: input_boolean.turn_on
+        entity_id: input_boolean.loft_occupancy_lighting
+      - service: input_boolean.turn_on
+        entity_id: input_boolean.living_room_occupancy_lighting

@@ -1,0 +1,22 @@
+type: vertical-stack
+cards:
+  - type: 'custom:swipe-card'
+    card_width: 75%
+    parameters:
+      centeredSlides: true
+      coverflowEffect:
+        depth: 100
+        modifier: 1
+        rotate: 50
+        slideShadows: true
+        stretch: 0
+      effect: coverflow
+      grabCursor: true
+      pagination:
+        type: bullets
+      slidesPerView: auto
+      start_card: 1
+    cards:
+      - !include ../graph/bathroom/temperature.yaml
+      - !include ../graph/bathroom/humidity.yaml
+      - !include ../graph/bathroom/luminance.yaml

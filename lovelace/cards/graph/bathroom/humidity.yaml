@@ -1,0 +1,9 @@
+type: 'custom:mini-graph-card'
+align_state: center
+entities:
+  - entity: sensor.bathroom_relative_humidity
+state_adaptive_color: true
+hours_to_show: 12
+points_per_hour: 2
+show:
+  extrema: true

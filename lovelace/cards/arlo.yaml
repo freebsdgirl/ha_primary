@@ -1,0 +1,18 @@
+type: 'custom:aarlo-glance'
+door: binary_switch.front_door
+door_bell: binary_sensor.aarlo_ding_doorbell
+door_lock: lock.front_door
+entity: camera.aarlo_front_door_camera
+image_click: play
+name: Front Door
+show:
+  - motion
+  - sound
+  - snapshot
+  - battery_level
+  - signal_strength
+  - captured_today
+  - image_date
+top_date: false
+top_status: false
+top_title: false

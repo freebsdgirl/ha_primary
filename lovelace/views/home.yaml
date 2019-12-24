@@ -1,0 +1,26 @@
+title: Home
+path: default_view
+panel: true
+cards:
+  - type: 'custom:layout-card'
+    layout: vertical
+    cards:
+      - !include ../cards/weather.yaml
+      - !include ../cards/calendar.yaml
+      - type: entities
+        entities:
+          - input_select.occupied
+      - type: entities
+        entities:
+          - person.randi_lee_harper
+          - sensor.grandmakj
+          - sensor.discord_aimer_7551
+          - sensor.discord_grandmakj_0001
+      - break
+      - !include ../cards/alarm_control_panel.yaml
+      - !include ../cards/arlo.yaml
+      - !include ../cards/roborock_s4.yaml
+      - break
+      - !include ../cards/unifi_bandwidth_stats.yaml
+      - !include ../cards/lights/all_on.yaml
+

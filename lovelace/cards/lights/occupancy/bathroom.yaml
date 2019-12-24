@@ -1,0 +1,23 @@
+type: vertical-stack
+cards:
+  - type: entities
+    entities:
+      - entity: input_boolean.bathroom_occupancy_lighting
+        icon: 'mdi:auto-fix'
+        name: occupancy automations
+      - entity: input_number.bathroom_occupancy_timeout
+        icon: 'mdi:clock'
+        name: timeout
+  - type: 'custom:auto-entities'
+    card:
+      type: entities
+    filter:
+      exclude:
+        - attributes:
+            is_hue_group: true
+      include:
+        - area: Bathroom
+          domain: light
+    show_empty: false
+    sort:
+      method: name

@@ -1,0 +1,14 @@
+type: horizontal-stack
+cards:
+  - type: sensor
+    detail: 2
+    entity: sensor.unifi_dream_machine_kbyte_sec_received
+    graph: line
+    hours_to_show: 4
+    name: kb/s in
+  - type: sensor
+    detail: 2
+    entity: sensor.unifi_dream_machine_kbyte_sec_sent
+    graph: line
+    hours_to_show: 4
+    name: kb/s out

@@ -1,0 +1,5 @@
+title: Living Room 
+icon: 'fas:couch'
+badges: []
+cards:
+  - !include ../cards/lights/occupancy/living_room.yaml
